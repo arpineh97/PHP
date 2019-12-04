@@ -1,6 +1,6 @@
 <?php
 $random_numbers = [];
-for ($random_number = 0; count($random_numbers) < rand(15,110); $random_number++){
+for ($i = 0; count($random_numbers) < rand(15,110); $i++){
       {
         $random_number = mt_rand(1,100);
     }
