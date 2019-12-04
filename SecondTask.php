@@ -1,13 +1,3 @@
-<!DOCTYPE HTML>
-<html lang="en">
-<head>
-    <style>
-        .error {color: #FF0000;}
-    </style>
-    <title>Second</title>
-</head>
-<body>
-
 <?php
 $inputedTextErr = "";
 $inputedText = "";
@@ -21,12 +11,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $inputedText = test_input($_POST["inputedText"]);
 
-            if ((!preg_match($inputedText, (string)$numbers)) ) {
-                $inputedTextErr = "Միայն թվեր են թույլատրվում";
-            } elseif ((!preg_match($inputedText, (string)$letters))) {
-                $inputedTextErr = "Միայն տառեր են թույլատրվում";
-            } elseif ((!preg_match($inputedText, (string)array_merge($numbers, $letters)))) {
-                $inputedTextErr = "Միայն տառեր և թվեր են թույլատրվում";
+        if ((!preg_match($inputedText, (string)$numbers)) ) {
+            $inputedTextErr = "Միայն թվեր են թույլատրվում";
+        } elseif ((!preg_match($inputedText, (string)$letters))) {
+            $inputedTextErr = "Միայն տառեր են թույլատրվում";
+        } elseif ((!preg_match($inputedText, (string)array_merge($numbers, $letters)))) {
+            $inputedTextErr = "Միայն տառեր և թվեր են թույլատրվում";
 
         }
     }
@@ -58,6 +48,16 @@ function check ($text) {
 
 ?>
 
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <style>
+        .error {color: #FF0000;}
+    </style>
+    <title>Second</title>
+</head>
+<body>
+
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
     <label>
@@ -79,12 +79,13 @@ function check ($text) {
 
 </form>
 
+</body>
+</html>
+
 <?php
+
 echo "<h2>Տեքստը՝</h2>";
 print_r(check($inputedText));
 echo "<br>";
 
 ?>
-
-</body>
-</html>
