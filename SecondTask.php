@@ -10,12 +10,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $inputedTextErr = "Մուտքագրեք տեքստը";
     } else {
         $inputedText = test_input($_POST["inputedText"]);
+        $choice = (int) $_POST["choice"];
 
-        if ((!preg_match($inputedText, (string)$numbers)) ) {
+        if ((!preg_match($inputedText, (string)$numbers)) && ($choice === 1) ) {
             $inputedTextErr = "Միայն թվեր են թույլատրվում";
-        } elseif ((!preg_match($inputedText, (string)$letters))) {
+        } elseif ((!preg_match($inputedText, (string)$letters)) && ($choice === 2)) {
             $inputedTextErr = "Միայն տառեր են թույլատրվում";
-        } elseif ((!preg_match($inputedText, (string)array_merge($numbers, $letters)))) {
+        } elseif ((!preg_match($inputedText, (string)array_merge($numbers, $letters))) && ($choice === 3)) {
             $inputedTextErr = "Միայն տառեր և թվեր են թույլատրվում";
 
         }
@@ -41,9 +42,11 @@ function check ($text) {
             array_push($lett, $text[$i]);
         }
     }
-    return [$num, $lett];
+    
+    echo "<h4>$num</h4>";
+    echo "<h4>$lett</h4>";
+    return 1;
 }
-
 
 
 ?>
@@ -67,10 +70,10 @@ function check ($text) {
     <br><br>
 
     <label>
-        <select name="choice[]">
-            <option value="Թվեր">Թվեր</option>
-            <option value="Տառեր">Տառեր</option>
-            <option value="Թվեր և տառեր">Թվեր և տառեր</option>
+        <select name="choice">
+            <option value="1">Թվեր</option>
+            <option value="2">Տառեր</option>
+            <option value="3">Թվեր և տառեր</option>
         </select>
     </label>
     <br><br>
@@ -85,7 +88,9 @@ function check ($text) {
 <?php
 
 echo "<h2>Տեքստը՝</h2>";
-print_r(check($inputedText));
+check($inputedText);
 echo "<br>";
+
+
 
 ?>
