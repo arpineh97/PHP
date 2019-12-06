@@ -2,8 +2,6 @@
 
 $inputedNumberErr = "";
 $inputedNumber = "";
-$numbers = range(0, 9);
-$letters = array_merge(range('A', 'Z'), range('a', 'z'));
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["inputedNumber"])) {
