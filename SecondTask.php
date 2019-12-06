@@ -1,16 +1,13 @@
 <?php
 
+error_reporting(-1);
+
 $inputedNumberErr = "";
 $inputedNumber = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["inputedNumber"])) {
+    if (empty($_POST["inputedNumber"]) && !is_numeric($inputedNumber)) {
         $inputedNumberErr = "Մուտքագրեք քանակ";
-    } else {
-        $inputedNumber = test_input($_POST["inputedNumber"]);
-    }
-    if (!is_numeric($inputedNumber)) {
-        $inputedNumberErr =  "Մուտքագրեք քանակ";
     }
 }
 
@@ -20,19 +17,18 @@ function generator ($length)
     $numbers = range(0, 9);
     $letters = array_merge(range('A','Z'), range('a','z'));
     $numbers_letters = array_merge($numbers, $letters);
+    $choice = (isset($_GET['choice']) ? $_GET['choice'] : null);
 
-    foreach ($_GET['choice'] as $selectedOption) {
-        if ($selectedOption == 1) {
+    if (is_array($choice)) {
+        foreach ($choice as $selectedOption) {
             for ($i = 0; $i < $length; $i++) {
-                $text .= $numbers[rand(0, 9)];
-            }
-        } elseif ($selectedOption == 2) {
-            for ($i = 0; $i < $length; $i++) {
-                $text .= $letters[rand(0, 51)];
-            }
-        } elseif ($selectedOption == 3) {
-            for ($i = 0; $i < $length; $i++) {
-                $text .= $numbers_letters[rand(0, 61)];
+                if ($choice == 1) {
+                    $text .= $numbers[rand(0, 9)];
+                } elseif ($choice == 2) {
+                    $text .= $letters[rand(0, 51)];
+                } elseif ($choice == 3) {
+                    $text .= $numbers_letters[rand(0, 61)];
+                }
             }
         }
     }
@@ -59,9 +55,6 @@ function check ($text)
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-    <style>
-        .error {color: #FF0000;}
-    </style>
     <title>Second</title>
 </head>
 <body>
@@ -71,7 +64,7 @@ function check ($text)
     <label>
         <input type="text" name="inputedNumber" , placeholder="տողի երկարություն" value="<?php echo $inputedNumber;?>">
     </label>
-    <span class="error">* <?php echo $inputedNumberErr;?></span>
+    <span><?php echo $inputedNumberErr;?></span>
     <br><br>
 
     <label>
@@ -92,14 +85,12 @@ function check ($text)
 
 <?php
 
-
 echo "<h2>Գեներացված տեքստը՝</h2>";
 $generatedText = generator($inputedNumber);
 echo "$generatedText";
 echo "<br>";
 $checkedText = check($generatedText);
-echo "$checkedText[0]";
-echo "$checkedText[1]";
+print_r($checkedText);
 echo "<br>";
 
 ?>
