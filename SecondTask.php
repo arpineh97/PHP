@@ -1,53 +1,60 @@
 <?php
-$inputedTextErr = "";
-$inputedText = "";
+
+$inputedNumberErr = "";
+$inputedNumber = "";
 $numbers = range(0, 9);
 $letters = array_merge(range('A', 'Z'), range('a', 'z'));
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["inputedText"])) {
-        $inputedTextErr = "Մուտքագրեք տեքստը";
+    if (empty($_POST["inputedNumber"])) {
+        $inputedNumberErr = "Մուտքագրեք քանակ";
     } else {
-        $inputedText = test_input($_POST["inputedText"]);
-        $choice = (int) $_POST["choice"];
-
-        if ((!preg_match($inputedText, (string)$numbers)) && ($choice === 1) ) {
-            $inputedTextErr = "Միայն թվեր են թույլատրվում";
-        } elseif ((!preg_match($inputedText, (string)$letters)) && ($choice === 2)) {
-            $inputedTextErr = "Միայն տառեր են թույլատրվում";
-        } elseif ((!preg_match($inputedText, (string)array_merge($numbers, $letters))) && ($choice === 3)) {
-            $inputedTextErr = "Միայն տառեր և թվեր են թույլատրվում";
-
-        }
+        $inputedNumber = test_input($_POST["inputedNumber"]);
+    }
+    if (!is_numeric($inputedNumber)) {
+        $inputedNumberErr =  "Մուտքագրեք քանակ";
     }
 }
 
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+function generator ($length)
+{
+    $text = "";
+    $numbers = range(0, 9);
+    $letters = array_merge(range('A','Z'), range('a','z'));
+    $numbers_letters = array_merge($numbers, $letters);
+
+    foreach ($_GET['choice'] as $selectedOption) {
+        if ($selectedOption == 1) {
+            for ($i = 0; $i < $length; $i++) {
+                $text .= $numbers[rand(0, 9)];
+            }
+        } elseif ($selectedOption == 2) {
+            for ($i = 0; $i < $length; $i++) {
+                $text .= $letters[rand(0, 51)];
+            }
+        } elseif ($selectedOption == 3) {
+            for ($i = 0; $i < $length; $i++) {
+                $text .= $numbers_letters[rand(0, 61)];
+            }
+        }
+    }
+    return $text;
 }
 
-function check ($text) {
-    array_chunk((array)$text,1);
+function check ($text)
+{
+    array_chunk((array)$text, 1);
     $num = [];
     $lett = [];
-    for( $i = 0; $i < strlen($text); $i++ ) {
+    for ($i = 0; $i < strlen($text); $i++) {
         if (is_numeric($text[$i])) {
             array_push($num, $text[$i]);
-        }
-        else {
+        } else {
             array_push($lett, $text[$i]);
         }
     }
-    
-    echo "<h4>$num</h4>";
-    echo "<h4>$lett</h4>";
-    return 1;
+    return [$num, $lett];
 }
-
 
 ?>
 
@@ -64,9 +71,9 @@ function check ($text) {
 <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
 
     <label>
-        <input type="text" name="inputedText" , placeholder="տողի երկարություն" value="<?php echo $inputedText;?>">
+        <input type="text" name="inputedNumber" , placeholder="տողի երկարություն" value="<?php echo $inputedNumber;?>">
     </label>
-    <span class="error">* <?php echo $inputedTextErr;?></span>
+    <span class="error">* <?php echo $inputedNumberErr;?></span>
     <br><br>
 
     <label>
@@ -87,10 +94,16 @@ function check ($text) {
 
 <?php
 
-echo "<h2>Տեքստը՝</h2>";
-check($inputedText);
+
+echo "<h2>Գեներացված տեքստը՝</h2>";
+$generatedText = generator($inputedNumber);
+echo "$generatedText";
+echo "<br>";
+$checkedText = check($generatedText);
+echo "$checkedText[0]";
+echo "$checkedText[1]";
 echo "<br>";
 
-
-
 ?>
+
+
