@@ -105,5 +105,3 @@ echo "$checkedText[1]";
 echo "<br>";
 
 ?>
-
-
