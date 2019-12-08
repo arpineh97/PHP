@@ -20,11 +20,11 @@ function generator ($length)
     $choice = (isset($_POST['choice']) ? $_POST['choice'] : null);
 
     for ($i = 0; $i < $length; $i++) {
-        if ($choice == "Թվեր") {
+        if ($choice == "numbers") {
             $text .= $numbers[rand(0, 9)];
-        } elseif ($choice == "Տառեր") {
+        } elseif ($choice == "letters") {
             $text .= $letters[rand(0, 51)];
-        } elseif ($choice == "Թվեր և տառեր") {
+        } elseif ($choice == "numbers and letters") {
             $text .= $numbers_letters[rand(0, 61)];
         }
     }
@@ -65,9 +65,9 @@ function check ($text)
 
     <label>
         <select name="choice">
-            <option value="Թվեր">Թվեր</option>
-            <option value="Տառեր">Տառեր</option>
-            <option value="Թվեր և տառեր">Թվեր և տառեր</option>
+            <option value="numbers">Թվեր</option>
+            <option value="letters">Տառեր</option>
+            <option value="numbers and letters">Թվեր և տառեր</option>
         </select>
     </label>
     <br><br>
