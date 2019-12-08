@@ -6,7 +6,7 @@ $inputedNumberErr = "";
 $inputedNumber = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (empty($_POST["inputedNumber"]) && !is_numeric($inputedNumber)) {
+    if (empty($_POST["inputedNumber"]) and !is_numeric($inputedNumber)) {
         $inputedNumberErr = "Մուտքագրեք քանակ";
     }
 }
@@ -17,21 +17,18 @@ function generator ($length)
     $numbers = range(0, 9);
     $letters = array_merge(range('A','Z'), range('a','z'));
     $numbers_letters = array_merge($numbers, $letters);
-    $choice = (isset($_GET['choice']) ? $_GET['choice'] : null);
+    $choice = (isset($_POST['choice']) ? $_POST['choice'] : null);
 
-    if (is_array($choice)) {
-        foreach ($choice as $selectedOption) {
-            for ($i = 0; $i < $length; $i++) {
-                if ($choice == 1) {
-                    $text .= $numbers[rand(0, 9)];
-                } elseif ($choice == 2) {
-                    $text .= $letters[rand(0, 51)];
-                } elseif ($choice == 3) {
-                    $text .= $numbers_letters[rand(0, 61)];
-                }
-            }
+    for ($i = 0; $i < $length; $i++) {
+        if ($choice == "Թվեր") {
+            $text .= $numbers[rand(0, 9)];
+        } elseif ($choice == "Տառեր") {
+            $text .= $letters[rand(0, 51)];
+        } elseif ($choice == "Թվեր և տառեր") {
+            $text .= $numbers_letters[rand(0, 61)];
         }
     }
+
     return $text;
 }
 
@@ -59,19 +56,18 @@ function check ($text)
 </head>
 <body>
 
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+<form method="post" action="">
 
     <label>
-        <input type="text" name="inputedNumber" , placeholder="տողի երկարություն" value="<?php echo $inputedNumber;?>">
+        <input type="text" id="inputedNumber" name="inputedNumber"  placeholder="տողի երկարություն">
     </label>
-    <span><?php echo $inputedNumberErr;?></span>
     <br><br>
 
     <label>
         <select name="choice">
-            <option value="1">Թվեր</option>
-            <option value="2">Տառեր</option>
-            <option value="3">Թվեր և տառեր</option>
+            <option value="Թվեր">Թվեր</option>
+            <option value="Տառեր">Տառեր</option>
+            <option value="Թվեր և տառեր">Թվեր և տառեր</option>
         </select>
     </label>
     <br><br>
@@ -86,7 +82,7 @@ function check ($text)
 <?php
 
 echo "<h2>Գեներացված տեքստը՝</h2>";
-$generatedText = generator($inputedNumber);
+$generatedText = generator($_POST['inputedNumber']);
 echo "$generatedText";
 echo "<br>";
 $checkedText = check($generatedText);
