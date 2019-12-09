@@ -17,7 +17,6 @@ function generator ($length)
     $text = "";
     $numbers = range(0, 9);
     $letters = array_merge(range('A','Z'), range('a','z'));
-    $numbers_letters = array_merge($numbers, $letters);
     $choice = (isset($_POST['choice']) ? $_POST['choice'] : null);
 
     for ($i = 0; $i < $length; $i++) {
