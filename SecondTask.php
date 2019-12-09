@@ -5,6 +5,7 @@ error_reporting(-1);
 $inputedNumberErr = "";
 $inputedNumber = "";
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["inputedNumber"]) and !is_numeric($inputedNumber)) {
         $inputedNumberErr = "Մուտքագրեք քանակ";
@@ -25,7 +26,11 @@ function generator ($length)
         } elseif ($choice == "letters") {
             $text .= $letters[rand(0, 51)];
         } elseif ($choice == "numbers and letters") {
-            $text .= $numbers_letters[rand(0, 61)];
+            if($i % 2 == 0) {
+                $text .= $numbers[rand(0, 9)];
+            } else {
+                $text .= $letters[rand(0, 51)];
+            }
         }
     }
 
@@ -59,7 +64,7 @@ function check ($text)
 <form method="post" action="">
 
     <label>
-        <input type="text" id="inputedNumber" name="inputedNumber"  placeholder="տողի երկարություն">
+        <input type="text" name="inputedNumber" placeholder="տողի երկարություն">
     </label>
     <br><br>
 
