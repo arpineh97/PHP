@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 function generator ($length)
 {
     $text = "";
+    $text1 = "";
     $numbers = range(0, 9);
     $letters = array_merge(range('A','Z'), range('a','z'));
     $choice = (isset($_POST['choice']) ? $_POST['choice'] : null);
@@ -26,13 +27,13 @@ function generator ($length)
             $text .= $letters[rand(0, 51)];
         } elseif ($choice == "numbers and letters") {
             if($i % 2 == 0) {
-                $text .= $numbers[rand(0, 9)];
+                $text1 .= $numbers[rand(0, 9)];
             } else {
-                $text .= $letters[rand(0, 51)];
+                $text1 .= $letters[rand(0, 51)];
             }
+            $text = str_shuffle($text1);
         }
     }
-
     return $text;
 }
 
